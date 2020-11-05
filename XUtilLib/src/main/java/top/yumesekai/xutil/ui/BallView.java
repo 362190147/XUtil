@@ -7,8 +7,6 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import androidx.annotation.Nullable;
-
 public class BallView extends View {
     private ValueAnimator anim;
     private int color =0xff0000ff;
@@ -23,17 +21,17 @@ public class BallView extends View {
         init();
     }
 
-    public BallView(Context context, @Nullable AttributeSet attrs) {
+    public BallView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public BallView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public BallView(Context context,  AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    public BallView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public BallView(Context context,  AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

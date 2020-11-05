@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +22,16 @@ public class ThreeBall extends View {
         super(context);
     }
 
-    public ThreeBall(Context context, @Nullable AttributeSet attrs) {
+    public ThreeBall(Context context,  AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ThreeBall(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ThreeBall(Context context,  AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
     }
 
-    public ThreeBall(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ThreeBall(Context context,  AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
