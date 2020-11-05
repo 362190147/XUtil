@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import top.yumesekai.xutil.R;
+
 public class WaveView extends View {
     private static final String TAG = WaveView.class.getSimpleName();
     private int mWidth, mHeight;
@@ -30,7 +32,7 @@ public class WaveView extends View {
     private float amplitude = 0.3f;
     private float wAmplitude = 1f;
 
-    private int[] COLORS = {android.R.color.holo_green_light, android.R.color.holo_blue_dark, android.R.color.holo_red_light};
+    private int[] COLORS = {android.R.color.holo_green_light, android.R.color.holo_blue_dark, R.color.pink};
     private Random random;
 
     private static final float MAX_VOLUME = 30;

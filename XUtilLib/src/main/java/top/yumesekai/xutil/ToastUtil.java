@@ -2,8 +2,6 @@ package top.yumesekai.xutil;
 
 import android.widget.Toast;
 
-import top.yumesekai.xutil.XUtil;
-
 public class ToastUtil {
 
     public static void toastShortMessage(String msg){

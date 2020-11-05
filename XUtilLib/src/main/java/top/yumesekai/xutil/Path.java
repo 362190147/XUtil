@@ -2,8 +2,6 @@ package top.yumesekai.xutil;
 
 import android.os.Environment;
 
-import top.yumesekai.xutil.XUtil;
-
 public class Path {
 
     /**
