@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
+        android:textColor="#ffffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -20,6 +21,43 @@
     <top.yumesekai.xutil.ui.WaveView
         android:id="@+id/waveview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="500dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="21dp" />
 
+    <top.yumesekai.xutil.ui.BallView
+        android:layout_width="55dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="117dp"
+        android:layout_marginTop="105dp" />
+
+    <top.yumesekai.xutil.ui.ThreeBall
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        />
+
+    <Button
+        android:id="@+id/btn_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="点击说话"
+        android:textColor="#ffffffff"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        />
+
+    <TextView
+        android:id="@+id/db"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_record"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="68dp"
+        android:text="声量0"
+        android:textSize="20sp"
+        android:textColor="#ffffffff"
+        />
 </RelativeLayout>

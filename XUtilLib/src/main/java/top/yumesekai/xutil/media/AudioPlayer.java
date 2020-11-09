@@ -7,16 +7,15 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
-import top.yumesekai.xutil.Path;
+import top.yumesekai.xutil.PathUtil;
 import top.yumesekai.xutil.ToastUtil;
-import top.yumesekai.xutil.XUtil;
 
 
 public class AudioPlayer {
 
     private static final String TAG = AudioPlayer.class.getSimpleName();
     private static AudioPlayer sInstance = new AudioPlayer();
-    private static String CURRENT_RECORD_FILE = Path.getDiskCacheDir()+"/record/auto_";
+    private static String CURRENT_RECORD_FILE = PathUtil.getDiskCacheDir()+"auto_";
     private static int MAGIC_NUMBER = 500;
     private static int MIN_RECORD_DURATION = 1000;
     private Callback mRecordCallback;
@@ -71,6 +70,12 @@ public class AudioPlayer {
         onRecordCompleted(true);
         mRecordCallback = null;
     }
+
+    public  int getMaxAmplitude(){
+        if(mRecorder==null)return -1;
+        return mRecorder.getMaxAmplitude();
+    }
+
 
     private void stopInternalRecord() {
         mHandler.removeCallbacksAndMessages(null);

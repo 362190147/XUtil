@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Handler;
 import android.os.Message;
@@ -42,6 +43,7 @@ public class WaveView extends View {
     private float[] linepositions = new float[]{0f, 0.1f, 0.9f, 1};
     private boolean running;
     private long l;
+    private RectF srcRect;
 
     public WaveView(Context context) {
         super(context);
@@ -58,7 +60,7 @@ public class WaveView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         mHeight = h;
         mWidth = w;
-
+        srcRect=new RectF(0, 0, w,h);
         MAX = h * 2 / 3;
     }
 
@@ -76,7 +78,6 @@ public class WaveView extends View {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-
                     running = true;
                     waveCount = 10;
                     createWave();
@@ -92,7 +93,7 @@ public class WaveView extends View {
             handler.sendEmptyMessageDelayed(1, 100);
     }
 
-    private int waveCount = 10;
+    private int waveCount = 1;
 
     private void setWaveCount(int count) {
         int size = waves.size();
@@ -123,15 +124,13 @@ public class WaveView extends View {
             waveCount = 10;
             amplitude = 1.2f;
         }
-        Log.e("AA-->", "setVolume: " + amplitude + "--" + volume);
-
+        //Log.e("AA-->", "setVolume: " + amplitude + "--" + volume);
         setWaveCount(waveCount);
     }
 
     public void stopAnim() {
         running = false;
         waveCount = 0;
-
         setWaveCount(waveCount);
     }
 
@@ -160,11 +159,13 @@ public class WaveView extends View {
         // TODO Auto-generated method stub
         super.onDraw(canvas);
 
+        //int saveCount = canvas.saveLayer(srcRect, mPaint, Canvas.ALL_SAVE_FLAG);
+
         if (!running) {
             return;
         }
         l = System.currentTimeMillis();
-        Log.e(TAG, "onDraw: " + l);
+        //Log.e(TAG, "onDraw: " + l);
         drawLine(canvas);
 
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.ADD));
@@ -174,7 +175,9 @@ public class WaveView extends View {
                 wave.draw(canvas, mPaint);
             }
         }
-        Log.e(TAG, "onDraw: " + (System.currentTimeMillis() - l));
+        //Log.e(TAG, "onDraw: " + (System.currentTimeMillis() - l));
+        //Log.d(TAG, "onDraw: " +waves.size());
+        //canvas.restoreToCount(saveCount);
         postInvalidateDelayed(20);
     }
 
@@ -261,10 +264,12 @@ public class WaveView extends View {
             this._draw(1, canvas);
         }
 
-        private void _draw(int m, Canvas canvas) {
+        Path path = new Path();
+        Path pathN = new Path();
 
-            Path path = new Path();
-            Path pathN = new Path();
+        private void _draw(int m, Canvas canvas) {
+            path.reset();
+            pathN.reset();
             path.moveTo(mWidth / 4, mHeight / 2);
             pathN.moveTo(mWidth / 4, mHeight / 2);
             double x_base = mWidth / 2  // 波浪位置
@@ -290,7 +295,6 @@ public class WaveView extends View {
             mPaint.setColor(getResources().getColor(color));
             canvas.drawPath(path, mPaint);
             canvas.drawPath(pathN, mPaint);
-
         }
 
         @Override

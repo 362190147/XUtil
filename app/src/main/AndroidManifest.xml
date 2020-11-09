@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="top.yumesekai.xutil">
-
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 录制音频 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 写外部存储 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 读外部存储 -->
     <application
         android:name=".XUtilApp"
         android:allowBackup="true"

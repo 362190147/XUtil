@@ -1,5 +1,6 @@
 package top.yumesekai.xutil.ui;
 
+import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,12 +10,12 @@ import android.view.View;
 
 public class BallView extends View {
     private ValueAnimator anim;
-    private int color =0xff0000ff;
     private Paint paint;
     private ValueAnimator animBall1;
     private ValueAnimator animBall2;
-    private int color1;
-    private int color2;
+    private int color1=0xfff9bd37;
+    private int color2=0xff8dc14b;
+    Float value=0.1f;
 
     public BallView(Context context) {
         super(context);
@@ -42,23 +43,17 @@ public class BallView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        int red=(int) (0xff*value);
-        //Log.d("color",""+red);
-        color=0xff000000+(red<<16);
-        //canvas.drawColor(color);
-        //paint.setColor(color);
-        //paint.setARGB(255,(int)(value*255),(int)((1-value)*255),(int)((1-value)*255));
         paint.setColor(color1);
         int radius=canvas.getHeight()/4;
         canvas.drawCircle(radius+(canvas.getWidth()-radius-radius)*value,canvas.getHeight()/2, radius, paint);
-        //paint.setARGB(255,(int)((1-value)*255),(int)(value*255),(int)((1-value)*255));
         paint.setColor(color2);
         canvas.drawCircle(radius+(canvas.getWidth()-radius-radius)*(1-value),canvas.getHeight()/2, radius, paint);
     }
 
-    Float value=0.1f;
+
 
     public void startAnimation(){
+        AnimatorSet animatorSet=new AnimatorSet();
         anim = ValueAnimator.ofFloat(0.0f,1.0f);
         anim.setRepeatCount(ValueAnimator.INFINITE);//设置无限重复
         anim.setRepeatMode(ValueAnimator.REVERSE);//设置重复模式
@@ -67,7 +62,6 @@ public class BallView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 value = (Float) animation.getAnimatedValue();
-                //color = (Integer) animation.getAnimatedValue();
                 postInvalidate();
             }
         });
@@ -85,7 +79,8 @@ public class BallView extends View {
                 postInvalidate();
             }
         });
-        animBall1.start();
+        //animBall1.start();
+
 
         //颜色动画
         animBall2=ValueAnimator.ofArgb(0xff8dc14b, 0xfff35959 );
@@ -99,7 +94,9 @@ public class BallView extends View {
                 postInvalidate();
             }
         });
-        animBall2.start();
+        //animBall2.start();
+        animatorSet.play(animBall1).with(animBall2);
+
     }
 
 }
