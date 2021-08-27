@@ -13,6 +13,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -71,19 +72,17 @@ public class WaveView extends View {
         mWidth = getMeasuredWidth();
     }
 
-    private Handler handler = new Handler() {
+    private Handler handler = new Handler(Looper.getMainLooper()) {
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what) {
-                case 1:
-                    running = true;
-                    waveCount = 10;
-                    createWave();
-                    setWaveCount(waveCount);
-                    postInvalidate();
-                    break;
+            if (msg.what == 1) {
+                running = true;
+                waveCount = 10;
+                createWave();
+                setWaveCount(waveCount);
+                postInvalidate();
             }
         }
     };
@@ -185,15 +184,12 @@ public class WaveView extends View {
         ValueAnimator animator = ValueAnimator.ofInt(0, waveBean.maxHeight);
         animator.setDuration(waveBean.duration);
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                waveBean.waveHeight = (int) animation.getAnimatedValue();
-                if (waveBean.waveHeight > waveBean.maxHeight / 2) {
-                    waveBean.waveHeight = waveBean.maxHeight - waveBean.waveHeight;
-                }
-//                Log.e("AAA-->", "initAnimator: " + waveBean.toString());
+        animator.addUpdateListener(animation -> {
+            waveBean.waveHeight = (int) animation.getAnimatedValue();
+            if (waveBean.waveHeight > waveBean.maxHeight / 2) {
+                waveBean.waveHeight = waveBean.maxHeight - waveBean.waveHeight;
             }
+//                Log.e("AAA-->", "initAnimator: " + waveBean.toString());
         });
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -235,13 +231,13 @@ public class WaveView extends View {
                 maxHeight = random.nextInt(MAX / 6) + MAX / 5;
                 open_class = 2;
             } else if (seed <= 0.3 && seed > 0.2) {
-                maxHeight = random.nextInt(MAX / 3) + MAX * 1 / 5;
+                maxHeight = random.nextInt(MAX / 3) + MAX / 5;
                 open_class = 3;
             } else if (seed > 0.3 && seed <= 0.7) {
                 maxHeight = random.nextInt(MAX / 2) + MAX * 2 / 5;
                 open_class = 3;
             } else if (seed > 0.7 && seed <= 0.8) {
-                maxHeight = random.nextInt(MAX / 3) + MAX * 1 / 5;
+                maxHeight = random.nextInt(MAX / 3) + MAX / 5;
                 open_class = 3;
             } else if (seed > 0.8) {
                 maxHeight = random.nextInt(MAX / 6) + MAX / 5;
@@ -253,9 +249,7 @@ public class WaveView extends View {
 
         double equation(double i) {
             i = Math.abs(i);
-            double y = -1 * amplitude
-                    * Math.pow(1 / (1 + Math.pow(open_class * i, 2)), 2);
-            return y;
+            return -1.0 * amplitude * Math.pow(1 / (1 + Math.pow(open_class * i, 2)), 2);
         }
 
         public void draw(Canvas canvas, Paint mPaint) {
@@ -311,7 +305,7 @@ public class WaveView extends View {
                     '}';
         }
     }
-
+    PorterDuffXfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER);
     private void drawLine(Canvas canvas) {
         canvas.save();
         LinearGradient shader = new LinearGradient(
@@ -320,7 +314,8 @@ public class WaveView extends View {
                 lineColors,
                 linepositions,
                 Shader.TileMode.MIRROR);
-        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+
+        mPaint.setXfermode(xfermode);
         mPaint.setShader(shader);
         mPaint.setStrokeWidth(2);
         canvas.drawLine(mWidth / 40, mHeight / 2, mWidth * 39 / 40, mHeight / 2, mPaint);

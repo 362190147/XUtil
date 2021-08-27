@@ -14,23 +14,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThreeBall extends View {
-    private Paint paint=new Paint();
+    private final Paint paint=new Paint();
     //private Position ball1=new Position(0,0);
     //private Position ball2=new Position(0,0);
     //private Position ball3=new Position(0,0);
-    private List<Position> ballList =new ArrayList<>();
+    private final List<Position> ballList =new ArrayList<>();
 
 
     public ThreeBall(Context context) {
-        super(context);
+        this(context,null);
     }
 
     public ThreeBall(Context context,  AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs,0);
     }
 
     public ThreeBall(Context context,  AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        this(context, attrs, defStyleAttr,0);
 
     }
 
@@ -60,8 +60,8 @@ public class ThreeBall extends View {
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+    protected void onSizeChanged(int w, int h, int oldW, int oldH) {
+        super.onSizeChanged(w, h, oldW, oldH);
         init(w,h);
         startAnimation();
     }
@@ -70,20 +70,20 @@ public class ThreeBall extends View {
         radius=w/7;
         //Log.d("test",""+w);
         paint.setColor(0xffffffff);
-        /** 位置关系
+        /* 位置关系
          * p7 p8 p9
          * p4 p5 p6
          * p1 p2 p3
          */
-        Position p1=new Position(radius, h-radius);
-        Position p2=new Position(w/2, h-radius);
-        Position p3=new Position(w-radius,h-radius);
-        Position p4=new Position(radius,h/2);
-        Position p5=new Position(w/2,h/2);
-        Position p6=new Position(w-radius,h/2);
-        Position p7=new Position(radius,radius);
-        Position p8=new Position(w/2,radius);
-        Position p9=new Position(w-radius,radius);
+        Position p1= new Position(radius, h - radius);
+        Position p2= new Position(w / 2, h - radius);
+        Position p3= new Position(w - radius, h - radius);
+        Position p4= new Position(radius, h / 2);
+        Position p5= new Position(w / 2, h / 2);
+        Position p6= new Position(w - radius, h / 2);
+        Position p7= new Position(radius, radius);
+        Position p8= new Position(w / 2, radius);
+        Position p9= new Position(w - radius, radius);
         //ballList.add(new Position(0,0));
         ///ballList.add(new Position(0,0));
         ///ballList.add(new Position(0,0));
@@ -91,45 +91,26 @@ public class ThreeBall extends View {
         //list.add(ofInt1(2,p9,p1,p2,p5,p8,p7,p3,p6,p9));
         //list.add(ofInt1(0,p2,p3,p7,p4,p1,p9,p8,p5,p2));
 
-        list.add(ofInt(new Position(0,0),p7,p8,p9,p6,p3,p2,p1,p4,p7));
-        list.add(ofInt(new Position(0,0),p9,p1,p2,p5,p8,p7,p3,p6,p9));
-        list.add(ofInt(new Position(0,0),p2,p3,p7,p4,p1,p9,p8,p5,p2));
+        list.add(ofInt(new Position(0, 0),p7,p8,p9,p6,p3,p2,p1,p4,p7));
+        list.add(ofInt(new Position(0, 0),p9,p1,p2,p5,p8,p7,p3,p6,p9));
+        list.add(ofInt(new Position(0, 0),p2,p3,p7,p4,p1,p9,p8,p5,p2));
     }
 
 
-    PositionEvaluator positionEvaluator=new PositionEvaluator();
+    PositionEvaluator positionEvaluator= new PositionEvaluator();
 
 
     ValueAnimator ofInt(final Position ball0, Position... value){
         ballList.add(ball0);
-        ValueAnimator va = ObjectAnimator.ofObject(positionEvaluator, value);
+        ValueAnimator va = ObjectAnimator.ofObject(positionEvaluator, (Object[]) value);
         va.setRepeatCount(ValueAnimator.INFINITE);
         va.setRepeatMode(ValueAnimator.RESTART);
         va.setDuration(5000);
-        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                Position b=(Position) animation.getAnimatedValue();
-                ball0.x=b.x;
-                ball0.y=b.y;
-                postInvalidate();
-            }
-        });
-        return  va;
-    }
-
-    ValueAnimator ofInt1(final int i, Position... value){
-        ValueAnimator va = ObjectAnimator.ofObject(positionEvaluator, value);
-        va.setRepeatCount(ValueAnimator.INFINITE);
-        va.setRepeatMode(ValueAnimator.RESTART);
-        va.setDuration(5000);
-        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                ballList.set(i,(Position) animation.getAnimatedValue());
-
-                postInvalidate();
-            }
+        va.addUpdateListener(animation -> {
+            Position b=(Position) animation.getAnimatedValue();
+            ball0.x=b.x;
+            ball0.y=b.y;
+            postInvalidate();
         });
         return  va;
     }
@@ -140,7 +121,7 @@ public class ThreeBall extends View {
         }
     }
 
-    private class Position{
+    private static class Position{
         public int x;
         public int y;
         public Position(int x,int y){
@@ -150,7 +131,7 @@ public class ThreeBall extends View {
     }
 
 
-    class PositionEvaluator implements TypeEvaluator<Position> {
+    static class PositionEvaluator implements TypeEvaluator<Position> {
         //IntEvaluator intEvaluator = new IntEvaluator();
         public Integer intEvaluate(float fraction, Integer startValue, Integer endValue) {
             int startInt = startValue;
@@ -160,8 +141,8 @@ public class ThreeBall extends View {
         @Override
         public Position evaluate(float fraction, Position startValue, Position endValue) {
             return new Position(
-                    intEvaluate(fraction,startValue.x,endValue.x),
-                    intEvaluate(fraction,startValue.y,endValue.y));
+                    intEvaluate(fraction, startValue.x, endValue.x),
+                    intEvaluate(fraction, startValue.y, endValue.y));
         }
 
     }

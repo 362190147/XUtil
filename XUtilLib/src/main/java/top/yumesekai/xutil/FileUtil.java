@@ -48,8 +48,8 @@ public class FileUtil {
 
     /**
      * 目录不存在创建所有目录,文件不存在创建文件
-     * @param fileFullPath
-     * @return
+     * @param fileFullPath 文件完整路径
+     * @return 创建的文件
      */
     public static File createFile(String fileFullPath){
         String  dir= getDirName(fileFullPath);
