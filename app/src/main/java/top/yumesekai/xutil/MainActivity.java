@@ -22,35 +22,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.RECORD_AUDIO
     };
 
-    /*
-     * 申请录音权限*/
-    public static void verifyAudioPermissions(Activity activity) {
-        int permission = ActivityCompat.checkSelfPermission(activity,
-                Manifest.permission.RECORD_AUDIO);
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, PERMISSION_AUDIO,
-                    GET_RECODE_AUDIO);
-        }
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            // requestCode即所声明的权限获取码，在checkSelfPermission时传入
-            case GET_RECODE_AUDIO:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // 获取到权限，作相应处理（调用定位SDK应当确保相关权限均被授权，否则可能引起定位失败）
-
-                } else {
-                    // 没有获取到权限，做特殊处理
-                    ToastUtil.toastLongMessage("获取位置权限失败，请手动开启");
-                }
-                break;
-            default:
-                break;
-        }
-    }
 
     //视图绑定
     ActivityMainBinding binding;
@@ -72,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_DOWN:
                     startX=event.getX();
                     startY=event.getY();
-                    Log.d(TAG,"MotionEvent.ACTION_DOWN"+event.getX()+","+event.getY());
+                    Log.d(TAG,"MotionEvent.ACTION_DOWN" + event.getX()+","+event.getY());
                     AudioPlayer.getInstance().startRecord(success -> {
                         //AudioPlayer.getInstance().getPath();
 
@@ -109,6 +81,35 @@ public class MainActivity extends AppCompatActivity {
         verifyAudioPermissions(this);
     }
 
+    /*
+     * 申请录音权限*/
+    public static void verifyAudioPermissions(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.RECORD_AUDIO);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, PERMISSION_AUDIO,
+                    GET_RECODE_AUDIO);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            // requestCode即所声明的权限获取码，在checkSelfPermission时传入
+            case GET_RECODE_AUDIO:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 获取到权限，作相应处理（调用定位SDK应当确保相关权限均被授权，否则可能引起定位失败）
+
+                } else {
+                    // 没有获取到权限，做特殊处理
+                    ToastUtil.toastLongMessage("获取位置权限失败，请手动开启");
+                }
+                break;
+            default:
+                break;
+        }
+    }
     Handler mHandler=new Handler();
     private Runnable mUpdateMicStatusTimer = new Runnable() {
         public void run() {

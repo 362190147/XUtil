@@ -25,7 +25,7 @@ public class HttpUtil {
     public static String download(String url) throws IOException {
         //获得文件名
 
-        String fileName=Math.abs(url.hashCode())+parseSuffix(url);
+        String fileName = Math.abs(url.hashCode()) + parseSuffix(url);
 
         Request request = new Request.Builder()
                 .url(url)
@@ -51,7 +51,7 @@ public class HttpUtil {
 
         Matcher matcher = pattern.matcher(url);
 
-        String[] spUrl = url.toString().split("/");
+        String[] spUrl = url.split("/");
         int len = spUrl.length;
         String endUrl = spUrl[len - 1];
 
